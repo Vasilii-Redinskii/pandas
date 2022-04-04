@@ -57,6 +57,9 @@ def make_report(log_file_name, report_template_file_name, report_output_file_nam
     # Получаем список товаров по популярности
     product_counter = get_max_val(excel_data_frame, KEY_ITEM)
 
+    # Групперуем посещения по браузерам и месяцам и считаем кол-во
+    browser_by_month=excel_data_frame.groupby([KEY_BROWSER, pandas.Grouper(key='Month')])[KEY_BROWSER].count()
+
     # Получаем список товаров по популярности для мужчин
     m_product_counter = get_max_val(m_excel_data, KEY_ITEM)
 
@@ -73,6 +76,13 @@ def make_report(log_file_name, report_template_file_name, report_output_file_nam
         sheet.cell(row=i+5, column=1).value = browser_counter.most_common(7)[i][0]
         #7 самых популярных товаров
         sheet.cell(row=i+19, column=1).value = product_counter.most_common(7)[i][0]
+        
+        for j in range(len(month_list)):
+            #количество посещений по месяцам
+            sheet.cell(row=i+5, column=j+3).value = browser_by_month.get(key = browser_counter.most_common(7)[i][0]).get(key = month_list[j])
+            #количество товаров по месяцам
+            sheet.cell(row=i+19, column=j+3).value = get_max_val(excel_data_frame[excel_data_frame["Month"]==month_list[j]], KEY_ITEM)[product_counter.most_common(7)[i][0]]
+
     #       самые популярные и самые не востребованные товары среди мужчин и женщин 
     sheet.cell(row=31, column=2).value = m_product_counter.most_common(1)[0][0]
     sheet.cell(row=32, column=2).value = f_product_counter.most_common(1)[0][0]
@@ -80,9 +90,5 @@ def make_report(log_file_name, report_template_file_name, report_output_file_nam
     sheet.cell(row=34, column=2).value = f_product_counter.most_common()[-1][0]
     # Сохраняем файл-отчет
     wb.save(report_output_file_name)
-
-   
-
-
 
 #make_report('logs.xlsx','report_template.xlsx','report.xlsx')
