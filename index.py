@@ -1,3 +1,18 @@
+ # Импортируем библиотеку pandas openpyxl collection datetime
+import pandas
+from openpyxl import load_workbook
+from collections import defaultdict, Counter
+from datetime import datetime
+
+GENDER_MALE = 'м'
+GENDER_FEMALE = 'ж'
+KEY_GENDER = 'Пол'
+KEY_ITEM = 'Купленные товары'
+KEY_DATE = 'Дата посещения'
+KEY_BROWSER = 'Браузер'
+ITEM_SPLITTER = ','
+
+
 #Функция словаря с ранжированием по максимальным значениям
 def get_max_val (excel_data, item_name):
     
@@ -66,20 +81,8 @@ def make_report(log_file_name, report_template_file_name, report_output_file_nam
     # Сохраняем файл-отчет
     wb.save(report_output_file_name)
 
-    # Импортируем библиотеку pandas
+   
 
 
-import pandas
-from openpyxl import load_workbook
-from collections import defaultdict, Counter
-from datetime import datetime
 
-GENDER_MALE = 'м'
-GENDER_FEMALE = 'ж'
-KEY_GENDER = 'Пол'
-KEY_ITEM = 'Купленные товары'
-KEY_DATE = 'Дата посещения'
-KEY_BROWSER = 'Браузер'
-ITEM_SPLITTER = ','
-
-make_report('logs.xlsx','report_template.xlsx','report.xlsx')
+#make_report('logs.xlsx','report_template.xlsx','report.xlsx')
